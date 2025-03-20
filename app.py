@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 
 # Add a title and description
 st.title("Alejandra Scott")
-st.markdown("This dashboard analyzes a dataset of *Airbnb* listings in :pink[Madrid]. Explore various insights based on the dataset.")
+st.markdown("This dashboard analyzes a dataset of *Airbnb* listings in Madrid.")
 
 # Load the dataset
 df = pd.read_csv("airbnb.csv")
@@ -53,9 +53,9 @@ with tab2:
 
 # Create additional graphs below tabs
 
-# 1. Graph to study the relationship between listing type and number of people
+# 1. Graph to study the relationship between listing type and number of people (using calculated_host_listings_count)
 st.subheader("Graph: Listing Type vs Number of People")
-listing_type_vs_people = df.groupby("room_type")["accommodates"].mean()
+listing_type_vs_people = df.groupby("room_type")["calculated_host_listings_count"].mean()  # Use this column as a proxy for number of people
 st.bar_chart(listing_type_vs_people)
 
 # 2. Graph to explore the price by listing type
@@ -86,8 +86,8 @@ accommodates_input = st.sidebar.slider("Select Number of People (Accommodates)",
 
 # Filter data based on user inputs
 df_simulator = df[(df["neighbourhood_group"] == neighborhood_input) & 
-                  (df["room_type"] == listing_type_input) &
-                  (df["accommodates"] == accommodates_input)]
+                  (df["room_type"] == listing_type_input) & 
+                  (df["calculated_host_listings_count"] == accommodates_input)]  # Adjusted the column here
 
 # Calculate the recommended price range
 if len(df_simulator) > 0:
